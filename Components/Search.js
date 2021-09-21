@@ -4,6 +4,7 @@ import { StyleSheet, View, TextInput, ActivityIndicator, FlatList } from 'react-
 import MovieItem from './MovieItem'
 import { connect } from "react-redux"
 import { isIDInArray } from "../utils/functions"
+import { MoviesList } from './MoviesList.js'
 
 class Search extends React.Component{
     state = {
@@ -57,15 +58,17 @@ class Search extends React.Component{
         return (
             <View>
                 <TextInput style={styles.textinput} placeholder = "Title" onChangeText={(text)=>{this.page=0; this.state.movies=[]; this._updateSearchedMovies(text)}} />
-                <FlatList
+                {this._displayLoading()}
+                <MoviesList movies={this.state.movies}/>
+                {/* <FlatList
                     data = {this.state.movies}
                     extraData = {this.props.favoriteMovies}
                     renderItem = {({item}) => <MovieItem movie={item} is_favorite={this._is_favorite(item)} onPress={(movieId) => {this.onPress(movieId)}}/>}
                     keyExtractor = {item => item.id.toString()}
                     onEndReachedThreshold={1}
                     onEndReached = {()=> {this._updateSearchedMovies(this.state.searchText)}}
-                />
-                {this._displayLoading()}
+                */}
+                
             </View>
         )
     }

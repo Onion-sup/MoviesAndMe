@@ -8,17 +8,25 @@ import store from './store/store'
 import { Provider } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
 const Stack = createStackNavigator();
 
-function moviesListToMmovieDetailsNavigation(){
+function searchToMovieDetailsNavigation(){
   return(
     <Stack.Navigator>
-      <Stack.Screen name="Search" component={Search}/>
-      <Stack.Screen name="MovieDetails" component={MovieDetails}/>
+      <Stack.Screen name="SearchStack" component={Search}/>
+      <Stack.Screen name="MovieDetailsStack" component={MovieDetails}/>
   </Stack.Navigator>
   )
 }
-
+function favoriteMoviesToMovieDetailsNavigation(){
+  return(
+    <Stack.Navigator>
+      <Stack.Screen name="favoriteMoviesStack" component={FavoriteMovies}/>
+      <Stack.Screen name="MovieDetailsStack" component={MovieDetails}/>
+  </Stack.Navigator>
+  )
+}
 export default function App() {
   const Tab = createBottomTabNavigator();
 
@@ -26,8 +34,8 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator>
-          <Tab.Screen name="Search_" component={moviesListToMmovieDetailsNavigation}/>
-          <Tab.Screen name="FavoriteMovies" component={FavoriteMovies}/>
+          <Tab.Screen name="SearchTab" component={searchToMovieDetailsNavigation}/>
+          <Tab.Screen name="FavoriteMoviesTab" component={favoriteMoviesToMovieDetailsNavigation}/>
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>

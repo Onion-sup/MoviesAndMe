@@ -1,17 +1,17 @@
+import { connect } from 'react-redux';
 import React from 'react'
-import { View, Text } from 'react-native';
+import MoviesList from './MoviesList';
 
 class FavoriteMovies extends React.Component{
-    constructor(props){
-        super(props);
-    }
+    
     render(){
         return(
-            <Text>
-                Hello it is FavoriteMovies
-            </Text>
+            <MoviesList movies={this.props.favoriteMovies} navigation={this.props.navigation} onReachEnd={undefined}/>
         )
     }
 }
 
-export default FavoriteMovies;
+const mapStateToProps = (state) => {
+    return { favoriteMovies: state.favoriteMovies }
+}
+export default connect(mapStateToProps)(FavoriteMovies);

@@ -36,8 +36,6 @@ class MovieDetails extends React.Component{
     }
     _displayMovieDetails(){
         const { movie } = this.state
-        var { favoriteMovies } = this.props
-        console.log("[_displayMovieDetails]", movie)
         if (movie){          
             return (
                 <ScrollView style={styles.main_container}>

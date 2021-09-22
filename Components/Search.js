@@ -1,10 +1,7 @@
 import React from 'react'
 import { getMovies } from '../API/TMDBAPI.js'
-import { StyleSheet, View, TextInput, ActivityIndicator, FlatList } from 'react-native'
-import MovieItem from './MovieItem'
-import { connect } from "react-redux"
-import { isIDInArray } from "../utils/functions"
-import { MoviesList } from './MoviesList.js'
+import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native'
+import MoviesList from './MoviesList.js'
 
 class Search extends React.Component{
     state = {
@@ -47,37 +44,19 @@ class Search extends React.Component{
             )
         }
     }
-    _is_favorite(movie){
-        return isIDInArray(this.props.favoriteMovies, movie.id)
-    }
-    onPress(movieId){
-        this.props.navigation.navigate('MovieDetails', { movieId: movieId })
-    }
+    
     render(){
-        console.log("[Search][render] this.props.favoriteMovies.length", this.props.favoriteMovies.length)
         return (
             <View>
                 <TextInput style={styles.textinput} placeholder = "Title" onChangeText={(text)=>{this.page=0; this.state.movies=[]; this._updateSearchedMovies(text)}} />
                 {this._displayLoading()}
-                <MoviesList movies={this.state.movies}/>
-                {/* <FlatList
-                    data = {this.state.movies}
-                    extraData = {this.props.favoriteMovies}
-                    renderItem = {({item}) => <MovieItem movie={item} is_favorite={this._is_favorite(item)} onPress={(movieId) => {this.onPress(movieId)}}/>}
-                    keyExtractor = {item => item.id.toString()}
-                    onEndReachedThreshold={1}
-                    onEndReached = {()=> {this._updateSearchedMovies(this.state.searchText)}}
-                */}
-                
+                <MoviesList movies={this.state.movies} onReachEnd={() => this._updateSearchedMovies(this.state.searchText)} navigation={this.props.navigation}/>
             </View>
         )
     }
 }
-const mapStateToProps = (state) => {
-    return { favoriteMovies: state.favoriteMovies }
-}
 
-export default connect(mapStateToProps)(Search);
+export default Search;
 
 const styles = StyleSheet.create({
     textinput: {

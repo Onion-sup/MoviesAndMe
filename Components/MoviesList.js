@@ -11,7 +11,7 @@ class MoviesList extends React.Component{
         return isIDInArray(this.props.favoriteMovies, movie.id)
     }
     onPress(movieId){
-        this.props.navigation.navigate('MovieDetailsStack', { movieId: movieId })
+        this.props.navigation.navigate('MovieDetails', { movieId: movieId })
     }
 
     render(){

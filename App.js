@@ -14,16 +14,16 @@ const Stack = createStackNavigator();
 function searchToMovieDetailsNavigation(){
   return(
     <Stack.Navigator>
-      <Stack.Screen name="SearchStack" component={Search}/>
-      <Stack.Screen name="MovieDetailsStack" component={MovieDetails}/>
+      <Stack.Screen name="Search" component={Search}/>
+      <Stack.Screen name="MovieDetails" component={MovieDetails}/>
   </Stack.Navigator>
   )
 }
 function favoriteMoviesToMovieDetailsNavigation(){
   return(
     <Stack.Navigator>
-      <Stack.Screen name="favoriteMoviesStack" component={FavoriteMovies}/>
-      <Stack.Screen name="MovieDetailsStack" component={MovieDetails}/>
+      <Stack.Screen name="favoriteMovies" component={FavoriteMovies}/>
+      <Stack.Screen name="MovieDetails" component={MovieDetails}/>
   </Stack.Navigator>
   )
 }
@@ -34,7 +34,22 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator
-          screenOptions={{tabBarIcon: () => <Icon name="search" size={30} color="grey"/>}}>
+          screenOptions={({route}) => (
+              { 
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarIcon: ({color, size}) => {
+                let iconName
+                if (route.name === "SearchTab"){
+                  iconName = "search"
+                }
+                else if (route.name == "FavoriteMoviesTab"){
+                  iconName = "heart"
+                }
+                return <Icon name={iconName} size={size} color={color}/>
+                }
+              })
+          }>
           <Tab.Screen name="SearchTab" component={searchToMovieDetailsNavigation}/>
           <Tab.Screen name="FavoriteMoviesTab" component={favoriteMoviesToMovieDetailsNavigation}/>
         </Tab.Navigator>

@@ -7,7 +7,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import store from './store/store'
 import { Provider } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
+import Icon from 'react-native-vector-icons/Ionicons'
 
 const Stack = createStackNavigator();
 
@@ -33,7 +33,8 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Tab.Navigator>
+        <Tab.Navigator
+          screenOptions={{tabBarIcon: () => <Icon name="search" size={30} color="grey"/>}}>
           <Tab.Screen name="SearchTab" component={searchToMovieDetailsNavigation}/>
           <Tab.Screen name="FavoriteMoviesTab" component={favoriteMoviesToMovieDetailsNavigation}/>
         </Tab.Navigator>

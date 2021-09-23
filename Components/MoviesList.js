@@ -3,7 +3,6 @@ import { FlatList } from 'react-native'
 import MovieItem from './MovieItem';
 import { isIDInArray } from '../utils/functions';
 import { connect } from "react-redux"
-
 import { Text, View } from 'react-native';
 
 class MoviesList extends React.Component{
@@ -19,6 +18,7 @@ class MoviesList extends React.Component{
         const { movies, onReachEnd } = this.props;
         return(
             <View>
+                
                 <FlatList
                     data = {movies}
                     extraData = {this.props.favoriteMovies}

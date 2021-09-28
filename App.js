@@ -8,6 +8,7 @@ import store from './store/store'
 import { Provider } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Button } from 'react-native';
 
 const Stack = createStackNavigator();
 

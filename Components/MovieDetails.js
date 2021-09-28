@@ -1,9 +1,10 @@
 import React from "react";
 import { getMovieDetails, getMoviePosterUrl } from "../API/TMDBAPI";
-import { StyleSheet, Text, View, Button, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
+import { StyleSheet, Share, View, Text, Button, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { isIDInArray } from '../utils/functions'
 import numeral from 'numeral'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 class MovieDetails extends React.Component{
     constructor(props) {
@@ -19,6 +20,12 @@ class MovieDetails extends React.Component{
             movie: data,
             isLoading: false,
         }))
+        this.props.navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity style={{paddingRight: 10}} onPress={() => Share.share( {title: this.state.movie.title, message: this.state.movie.overview} )}>
+                    <Icon name="share-social" size={40} color="grey"/>
+                </TouchableOpacity>)
+          })
     }
     _toggleFavorite() {
         const action = { type: "TOOGLE_FAVORITE", value: this.state.movie }
@@ -36,7 +43,9 @@ class MovieDetails extends React.Component{
     }
     _displayMovieDetails(){
         const { movie } = this.state
-        if (movie){          
+        if (movie){
+            console.log("[_displayMovieDetails]", this.props.navigation)
+
             return (
                 <ScrollView style={styles.main_container}>
                     <Image style={styles.movie_image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>

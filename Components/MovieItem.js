@@ -1,10 +1,12 @@
 
 import React from 'react'
-import { StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
+import { Animated, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { getMoviePosterUrl } from '../API/TMDBAPI'
 
 class MovieItem extends React.Component{
-
+    state = {
+      animeSlideValue: new Animated.Value(500)
+    }
     _display_favorite() {
       if (this.props.is_favorite){
         return (
@@ -12,24 +14,35 @@ class MovieItem extends React.Component{
         )
      }
     }
-
+    componentDidMount(){
+      this.slideIn()
+    }
+    slideIn = () => {
+      Animated.timing(this.state.animeSlideValue, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false
+      }).start()
+    }
     render() {
         const { movie, onPress } = this.props;
         return (
-          <TouchableOpacity onPress={()=> onPress(movie.id)}>
-            <View style={styles.main_container}>
-                <Image style={styles.image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>
-                <View style={styles.content_container}>
-                    <View style={styles.header_container}>
-                        {this._display_favorite()}
-                        <Text style={styles.title_text}>{movie.title}</Text>
-                        <Text style={styles.vote_text}>{movie.vote_average}</Text>
-                    </View>
-                    <Text style={styles.desc_text} numberOfLines={6}>{movie.overview}</Text>
-                    <Text style={styles.date_text}>Release date {movie.release_date}</Text>
-                </View>
-            </View>
+          <Animated.View style={{paddingLeft: this.state.animeSlideValue}}>
+            <TouchableOpacity onPress={()=> onPress(movie.id)}>
+              <View style={styles.main_container}>
+                  <Image style={styles.image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>
+                  <View style={styles.content_container}>
+                      <View style={styles.header_container}>
+                          {this._display_favorite()}
+                          <Text style={styles.title_text}>{movie.title}</Text>
+                          <Text style={styles.vote_text}>{movie.vote_average}</Text>
+                      </View>
+                      <Text style={styles.desc_text} numberOfLines={6}>{movie.overview}</Text>
+                      <Text style={styles.date_text}>Release date {movie.release_date}</Text>
+                  </View>
+              </View>
             </TouchableOpacity>
+          </Animated.View>
         )
     }
 }

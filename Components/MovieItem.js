@@ -4,9 +4,8 @@ import { Animated, StyleSheet, View, Text, Image, TouchableOpacity } from 'react
 import { getMoviePosterUrl } from '../API/TMDBAPI'
 
 class MovieItem extends React.Component{
-    state = {
-      animeSlideValue: new Animated.Value(500)
-    }
+    
+    animeSlideValue = new Animated.Value(500)
     _display_favorite() {
       if (this.props.is_favorite){
         return (
@@ -17,17 +16,17 @@ class MovieItem extends React.Component{
     componentDidMount(){
       this.slideIn()
     }
-    slideIn = () => {
-      Animated.timing(this.state.animeSlideValue, {
+    slideIn() {
+      Animated.timing(this.animeSlideValue, {
         toValue: 0,
-        duration: 500,
+        duration: 450,
         useNativeDriver: false
       }).start()
     }
     render() {
         const { movie, onPress } = this.props;
         return (
-          <Animated.View style={{paddingLeft: this.state.animeSlideValue}}>
+          <Animated.View style={{paddingLeft: this.animeSlideValue}}>
             <TouchableOpacity onPress={()=> onPress(movie.id)}>
               <View style={styles.main_container}>
                   <Image style={styles.image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>

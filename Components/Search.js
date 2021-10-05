@@ -11,8 +11,8 @@ class Search extends React.Component{
     }
     page = 0
     _updateSearchedMovies(searchText) {
-        this.setState({ isLoading: true });
         if (searchText.length > 0){
+            this.setState({ isLoading: true });
             this.page ++;
             getMovies(searchText, this.page)
             .then(data => {
@@ -28,18 +28,18 @@ class Search extends React.Component{
                         searchText: searchText
                     });
                 }
+                this.setState({ isLoading: false });
             })
         }
         else {
             this.setState({ movies: [], searchText: "" })
         }
-        this.setState({ isLoading: false });
     }
     _displayLoading(){
         if (this.state.isLoading) {
             return(
             <View style={styles.loading_container}>
-                <ActivityIndicator size="large"/>
+                <ActivityIndicator size="large" color="#B0C4DE"/>
             </View>
             )
         }
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         top: 100,
-        bottom: 0,
+        bottom: 0
       }
 })

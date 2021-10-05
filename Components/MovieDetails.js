@@ -1,25 +1,52 @@
 import React from "react";
 import { getMovieDetails, getMoviePosterUrl } from "../API/TMDBAPI";
-import { StyleSheet, Share, View, Text, Button, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
+import { StyleSheet, Share, View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
 import { isIDInArray } from '../utils/functions'
 import numeral from 'numeral'
 import Icon from 'react-native-vector-icons/Ionicons'
+import Animated, { EasingNode } from "react-native-reanimated";
 
 class MovieDetails extends React.Component{
+    favIconShrinkSize = 40
+    favIconSpreadSize = 60
+
     constructor(props) {
         super(props);
         this.state = {
             movie: undefined,
-            isLoading: true
+            isLoading: true,
         }
+        this.animFavIcon = new Animated.Value(this.favIconShrinkSize)
+    }
+
+    favIconSpread() {
+        Animated.timing(this.animFavIcon, {
+            toValue: this.favIconSpreadSize,
+            duration: 400,
+            easing: EasingNode.bounce
+        }).start()
+    }
+    favIconShrink() {
+        Animated.timing(this.animFavIcon, {
+            toValue: this.favIconShrinkSize,
+            duration: 400,
+            easing: EasingNode.bounce
+        }).start()
     }
     componentDidMount(){
         getMovieDetails(this.props.route.params.movieId)
-        .then((data) => this.setState({
-            movie: data,
+        .then((movie) => {this.setState({
+            movie: movie,
             isLoading: false,
-        }))
+        })
+        const isFavorite = isIDInArray(this.props.favoriteMovies, this.state.movie.id)
+        if (!isFavorite){
+            this.animFavIcon.setValue(this.favIconShrinkSize)
+        }
+        else {
+            this.animFavIcon.setValue(this.favIconSpreadSize)
+        }})
         this.props.navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity style={{paddingRight: 10}} onPress={() => Share.share( {title: this.state.movie.title, message: this.state.movie.overview} )}>
@@ -28,15 +55,24 @@ class MovieDetails extends React.Component{
           })
     }
     _toggleFavorite() {
+        var { favoriteMovies } = this.props
+        var isFavorite = isIDInArray(favoriteMovies, this.state.movie.id)
+        if (!isFavorite){
+            console.log("[_toggleFavorite] is_favorite", isFavorite)
+            this.favIconSpread()
+        }
+        else {
+            this.favIconShrink()
+        };
         const action = { type: "TOOGLE_FAVORITE", value: this.state.movie }
-        this.props.dispatch(action);
-        this.forceUpdate();
+        this.props.dispatch(action)
+        this.forceUpdate()
     }
     _diplayLoading(){
         if (this.state.isLoading){
             return(
                 <View style={styles.loading_container}>
-                    <ActivityIndicator size='large'/>
+                    <ActivityIndicator size='large' color="#B0C4DE"/>
                 </View>
             )
         }
@@ -44,8 +80,6 @@ class MovieDetails extends React.Component{
     _displayMovieDetails(){
         const { movie } = this.state
         if (movie){
-            console.log("[_displayMovieDetails]", this.props.navigation)
-
             return (
                 <ScrollView style={styles.main_container}>
                     <Image style={styles.movie_image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>
@@ -62,7 +96,6 @@ class MovieDetails extends React.Component{
                             Original language: {movie.original_language}{"\n"}
                             Production Companies: {movie.production_companies.map(company => company.name).join(' / ')}
                         </Text> 
-
                 </ScrollView>
             )
         }
@@ -71,14 +104,15 @@ class MovieDetails extends React.Component{
         const { movie } = this.state
         var { favoriteMovies } = this.props
         var isFavorite = isIDInArray(favoriteMovies, movie.id)
+        console.log()
         if (isFavorite){
             return (
-                <Image style={{width:50, height:50}} source={require("../images/ic_favorite.png")}/>
+                <Animated.Image style={{width:this.animFavIcon, height:this.animFavIcon}} source={require("../images/ic_favorite.png")}/>
             )
         }
         else {
             return (
-                <Image style={{width:50, height:50}} source={require("../images/ic_favorite_border.png")}/>
+                <Animated.Image style={{width:this.animFavIcon, height:this.animFavIcon}} source={require("../images/ic_favorite_border.png")}/>
             )
         }
     }

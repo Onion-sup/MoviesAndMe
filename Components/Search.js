@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { getMovies } from '../API/TMDBAPI.js'
 import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native'
 import MoviesList from './MoviesList.js'
@@ -10,6 +10,14 @@ class Search extends React.Component{
         searchText: ""
     }
     page = 0
+    componentDidMount() {
+        this.props.navigation.addListener(
+            'focus',
+            payload => {
+                this.forceUpdate()
+            }
+        )
+    }
     _updateSearchedMovies(searchText) {
         if (searchText.length > 0){
             this.setState({ isLoading: true });
@@ -44,7 +52,7 @@ class Search extends React.Component{
             )
         }
     }
-    
+
     render(){
         return (
             <View>

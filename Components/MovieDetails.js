@@ -55,10 +55,10 @@ class MovieDetails extends React.Component{
           })
     }
     _toggleFavorite() {
+        console.log("before this.props.dispatch(action)")
         var { favoriteMovies } = this.props
         var isFavorite = isIDInArray(favoriteMovies, this.state.movie.id)
         if (!isFavorite){
-            console.log("[_toggleFavorite] is_favorite", isFavorite)
             this.favIconSpread()
         }
         else {
@@ -66,8 +66,10 @@ class MovieDetails extends React.Component{
         };
         const action = { type: "TOOGLE_FAVORITE", value: this.state.movie }
         this.props.dispatch(action)
+        console.log("this.props.dispatch(action)\n")
         this.forceUpdate()
     }
+
     _diplayLoading(){
         if (this.state.isLoading){
             return(

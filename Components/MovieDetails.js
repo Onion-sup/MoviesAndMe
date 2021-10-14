@@ -85,7 +85,7 @@ class MovieDetails extends React.Component{
             return (
                 <ScrollView style={styles.main_container}>
                     <Image style={styles.movie_image} source={{uri: getMoviePosterUrl(movie.poster_path)}}/>
-                    <TouchableOpacity style={styles.favorite_touchable_logo} onPress={() => this._toggleFavorite()}>
+                    <TouchableOpacity style={styles.favorite_touchable_logo} onPressIn={() => this._toggleFavorite()}>
                     {this._displayIsFavoriteImage()}
                     </TouchableOpacity>
                         <Text style={styles.movie_title}>{movie.title}</Text>
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
       position: 'absolute',
       left: 0,
       right: 0,
-      top: 0,
+      top: 100,
       bottom: 0,
       alignItems: 'center',
       justifyContent: 'center'

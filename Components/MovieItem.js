@@ -2,6 +2,7 @@
 import React from 'react'
 import { Animated, StyleSheet, View, Text, Image, TouchableOpacity } from 'react-native'
 import { getMoviePosterUrl } from '../API/TMDBAPI'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 class MovieItem extends React.Component{
     
@@ -9,8 +10,8 @@ class MovieItem extends React.Component{
     _display_favorite() {
       if (this.props.is_favorite){
         return (
-          <Image style={styles.favorite_icon} source={require("../images/ic_favorite.png")}/>
-        )
+            <Icon name="heart" size={25} color="#CC0033"/>
+          )
      }
     }
     componentDidMount(){
@@ -35,6 +36,7 @@ class MovieItem extends React.Component{
                           {this._display_favorite()}
                           <Text style={styles.title_text}>{movie.title}</Text>
                           <Text style={styles.vote_text}>{movie.vote_average}</Text>
+                          <Icon name="star" size={25} color="orange"/>
                       </View>
                       <Text style={styles.desc_text} numberOfLines={6}>{movie.overview}</Text>
                       <Text style={styles.date_text}>Release date {movie.release_date}</Text>
@@ -76,7 +78,7 @@ const styles = StyleSheet.create({
   },
   vote_text: {
     fontWeight: 'bold',
-    fontSize: 26,
+    fontSize: 20,
     color: '#666666'
   },
   favorite_icon: {

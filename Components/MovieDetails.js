@@ -2,10 +2,9 @@ import React from "react";
 import { getMovieDetails, getMoviePosterUrl } from "../API/TMDBAPI";
 import { StyleSheet, Share, View, Text, ActivityIndicator, TouchableOpacity, Image, ScrollView } from "react-native";
 import { connect } from "react-redux";
-import { isIDInArray } from '../utils/functions'
+import { displayLoading, isIDInArray } from '../utils/functions'
 import numeral from 'numeral'
 import Icon from 'react-native-vector-icons/Ionicons'
-import Animated, { EasingNode } from "react-native-reanimated";
 
 class MovieDetails extends React.Component{
     favIconShrinkSize = 40
@@ -17,23 +16,8 @@ class MovieDetails extends React.Component{
             movie: undefined,
             isLoading: true,
         }
-        this.animFavIcon = new Animated.Value(this.favIconShrinkSize)
     }
 
-    favIconSpread() {
-        Animated.timing(this.animFavIcon, {
-            toValue: this.favIconSpreadSize,
-            duration: 400,
-            easing: EasingNode.bounce
-        }).start()
-    }
-    favIconShrink() {
-        Animated.timing(this.animFavIcon, {
-            toValue: this.favIconShrinkSize,
-            duration: 400,
-            easing: EasingNode.bounce
-        }).start()
-    }
     componentDidMount(){
         getMovieDetails(this.props.route.params.movieId)
         .then((movie) => {this.setState({
@@ -70,15 +54,6 @@ class MovieDetails extends React.Component{
         this.forceUpdate()
     }
 
-    _diplayLoading(){
-        if (this.state.isLoading){
-            return(
-                <View style={styles.loading_container}>
-                    <ActivityIndicator size='large' color="#B0C4DE"/>
-                </View>
-            )
-        }
-    }
     _displayMovieDetails(){
         const { movie } = this.state
         if (movie){
@@ -109,19 +84,19 @@ class MovieDetails extends React.Component{
         console.log()
         if (isFavorite){
             return (
-                <Animated.Image style={{width:this.animFavIcon, height:this.animFavIcon}} source={require("../images/ic_favorite.png")}/>
+                <Icon name="heart" size={40} color="#CC0033"/>
             )
         }
         else {
             return (
-                <Animated.Image style={{width:this.animFavIcon, height:this.animFavIcon}} source={require("../images/ic_favorite_border.png")}/>
+                <Icon name="heart-outline" size={40} color="#B3B6B7"/>
             )
         }
     }
     render() {
         return(
             <View>
-                {this._diplayLoading()}
+                {this.state.isLoading ? displayLoading(styles.loading_container): null}
                 {this._displayMovieDetails()}
             </View>
         )

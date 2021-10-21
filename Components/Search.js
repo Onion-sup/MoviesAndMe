@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { getMovies } from '../API/TMDBAPI.js'
-import { StyleSheet, View, TextInput, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, TextInput } from 'react-native'
+import { displayLoading } from '../utils/functions.js'
 import MoviesList from './MoviesList.js'
 
 class Search extends React.Component{
@@ -43,21 +44,13 @@ class Search extends React.Component{
             this.setState({ movies: [], searchText: "" })
         }
     }
-    _displayLoading(){
-        if (this.state.isLoading) {
-            return(
-            <View style={styles.loading_container}>
-                <ActivityIndicator size="large" color="#B0C4DE"/>
-            </View>
-            )
-        }
-    }
 
     render(){
+        console.log("[Search][render]")
         return (
             <View>
                 <TextInput style={styles.textinput} placeholder = "Title" onChangeText={(text)=>{this.page=0; this.state.movies=[]; this._updateSearchedMovies(text)}} />
-                {this._displayLoading()}
+                {this.state.isLoading ? displayLoading(styles.loading_container): null}
                 <MoviesList movies={this.state.movies} onReachEnd={() => this._updateSearchedMovies(this.state.searchText)} navigation={this.props.navigation}/>
             </View>
         )

@@ -15,9 +15,16 @@ export function getMoviePosterUrl(posterPath){
         "https://image.tmdb.org/t/p/w500/"+posterPath
     )
 }
-
+export function getTopMovies(page){
+    var url = "https://api.themoviedb.org/3/discover/movie?api_key=" + API_TOKEN + "&language=en-US&sort_by=popularity.desc&page=" + page
+    return(
+        fetch(url)
+        .then(response => response.json())
+        .catch(error => console.log(error))
+    )
+}
 export function getMovieDetails(movieId){
-    var url = "https://api.themoviedb.org/3/movie/"+movieId+"?api_key="+API_TOKEN;
+    var url = "https://api.themoviedb.org/3/movie/"+movieId+"?api_key="+ API_TOKEN;
 
     return (
         fetch(url)

@@ -8,7 +8,7 @@ function toogleFavorite (state = initialState, action) {
         case 'TOOGLE_FAVORITE':
             if (!isIDInArray(favoriteMovies, action.value.id)){
                 console.log("[toogleFavorite] push movie")
-                favoriteMovies.push(action.value)
+                favoriteMovies = [...favoriteMovies, action.value]
             }
             else{
                 console.log("[toogleFavorite] pop movie")

@@ -23,14 +23,8 @@ class MovieDetails extends React.Component{
         .then((movie) => {this.setState({
             movie: movie,
             isLoading: false,
-        })
-        const isFavorite = isIDInArray(this.props.favoriteMovies, this.state.movie.id)
-        if (!isFavorite){
-            this.animFavIcon.setValue(this.favIconShrinkSize)
-        }
-        else {
-            this.animFavIcon.setValue(this.favIconSpreadSize)
-        }})
+        })}
+        )
         this.props.navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity style={{paddingRight: 10}} onPress={() => Share.share( {title: this.state.movie.title, message: this.state.movie.overview} )}>
@@ -39,18 +33,8 @@ class MovieDetails extends React.Component{
           })
     }
     _toggleFavorite() {
-        console.log("before this.props.dispatch(action)")
-        var { favoriteMovies } = this.props
-        var isFavorite = isIDInArray(favoriteMovies, this.state.movie.id)
-        if (!isFavorite){
-            this.favIconSpread()
-        }
-        else {
-            this.favIconShrink()
-        };
         const action = { type: "TOOGLE_FAVORITE", value: this.state.movie }
         this.props.dispatch(action)
-        console.log("this.props.dispatch(action)\n")
         this.forceUpdate()
     }
 

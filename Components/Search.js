@@ -11,14 +11,7 @@ class Search extends React.Component{
         searchText: ""
     }
     page = 0
-    componentDidMount() {
-        this.props.navigation.addListener(
-            'focus',
-            payload => {
-                this.forceUpdate()
-            }
-        )
-    }
+
     _updateSearchedMovies(searchText) {
         if (searchText.length > 0){
             this.setState({ isLoading: true });
@@ -46,7 +39,6 @@ class Search extends React.Component{
     }
 
     render(){
-        console.log("[Search][render]")
         return (
             <View>
                 <TextInput style={styles.textinput} placeholder = "Title" onChangeText={(text)=>{this.page=0; this.state.movies=[]; this._updateSearchedMovies(text)}} />

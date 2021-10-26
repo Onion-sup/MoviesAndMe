@@ -9,6 +9,8 @@ import { Provider } from 'react-redux'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/Ionicons'
 import topMovies from './Components/topMovies';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
 
 const Stack = createStackNavigator();
 
@@ -38,9 +40,11 @@ function topMoviesToMovieDetailsNavigation(){
 }
 export default function App() {
   const Tab = createBottomTabNavigator();
+  const persistor = persistStore(store)
 
   return (
     <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
       <NavigationContainer>
         <Tab.Navigator
           screenOptions={({route}) => (
@@ -73,6 +77,7 @@ export default function App() {
           <Tab.Screen name="NewMoviesTab" component={topMoviesToMovieDetailsNavigation}/>
         </Tab.Navigator>
       </NavigationContainer>
+    </PersistGate>
     </Provider>
   );
 }
